@@ -1,5 +1,6 @@
 <script>
-import ProgressCircle from "../components/Progress.vue";
+import ProgressCircle from "../components/AboutView.vue";
+
 export default {
   components: {
     ProgressCircle,
@@ -26,11 +27,19 @@ export default {
       ],
       currentTab: 1,
       progressPercentage: 25,
+      isSelectOpened: false,
+      currentOption: "Выберите оценку",
     };
   },
   methods: {
     toggleTab(id) {
       this.currentTab = id;
+    },
+    openSelect() {
+      this.isSelectOpened = !this.isSelectOpened;
+    },
+    setValue(rating) {
+      this.currentOption = rating;
     },
   },
 };
@@ -55,6 +64,7 @@ export default {
     <div class="course_materials-wrapper">
       <div class="course_progress">
         <h3 class="course_progress-title">Прогресс прохождения курса</h3>
+        <ProgressCircle />
       </div>
 
       <div class="materials_list">
@@ -193,6 +203,7 @@ export default {
       <div class="course_comment-inner">
         <h2 class="course_comment-title">Оставьте отзыв по курсу</h2>
         <textarea
+          placeholder="Напишите свой вопрос"
           class="comments_textarea"
           name=""
           id=""
@@ -200,16 +211,25 @@ export default {
           rows="10"
         ></textarea>
         <div class="course_comment-bottom">
-          <div class="course_comment-select">
-            <div class="course_comment-select-item">
+          <div
+            :class="{ active: isSelectOpened }"
+            class="course_comment-select"
+            @click="openSelect"
+          >
+            <div class="course_comment-select-item top">
               <img src="/images/star_comment.svg" alt="" />
-              Выберите оценку
-              <img class="select_arrow" src="/images/arrow_bottom.svg" alt="" />
+              {{ currentOption }}
+              <img
+                :class="{ active: isSelectOpened }"
+                class="select_arrow"
+                src="/images/arrow_bottom.svg"
+                alt=""
+              />
             </div>
             <div
               @click="setValue(item)"
               v-for="item in 5"
-              class="course_comment-select-item"
+              class="course_comment-select-item bottom"
             >
               {{ item }}
               <img v-for="star in item" src="/images/star_comment.svg" alt="" />
@@ -220,7 +240,9 @@ export default {
       </div>
       <div class="course_rating">
         <p class="course_rating-txt">Общий рейтинг курса</p>
-        <h3><img width="30" src="/images/star.svg" alt="" />4.5</h3>
+        <h3 class="course_rating-title">
+          <img width="30" src="/images/star.svg" alt="" />4.5
+        </h3>
       </div>
     </div>
   </section>
@@ -622,6 +644,7 @@ body {
 .course_comment-wrapper {
   display: flex;
   justify-content: flex-end;
+  align-items: flex-start;
   gap: 20px;
 }
 .course_comment-inner {
@@ -638,19 +661,114 @@ body {
   line-height: 130%;
 }
 .comments_textarea {
+  resize: none;
+  border: none;
+  outline: none;
+  background: none;
+  border-radius: 10px;
+  border: 1px solid var(--11, #e5f0ff);
+  background: var(--5, #fff);
+  padding: 10px 14px;
+  width: 100%;
+  margin-top: 35px;
+  margin-bottom: 15px;
+  color: var(--3, #606060);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+  min-height: 200px;
+  max-height: 200px;
+  transition: all 0.3s ease;
+}
+.comments_textarea:focus {
+  border: 1px solid #0066ff;
 }
 .course_comment-bottom {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
 }
 .course_comment-select {
+  width: 50%;
+  max-height: 40px;
+  padding: 10px 14px;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--11, #e5f0ff);
+  background: var(--5, #fff);
+  display: flex;
+  flex-direction: column;
+  /* gap: 15px; */
+  transition: all 0.5s ease-in-out;
+}
+.course_comment-select.active {
+  max-height: 400px;
 }
 .course_comment-select-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  cursor: pointer;
+}
+.course_comment-select-item.top {
+  margin-bottom: 20px;
+}
+.course_comment-select-item.bottom {
+  padding: 10px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+.course_comment-select-item.bottom:hover {
+  background: #e5f0ff;
 }
 .select_arrow {
+  position: absolute;
+  right: 14px;
+  top: 3px;
+  transition: all 0.3s ease;
+}
+.select_arrow.active {
+  transform: rotate(-180deg);
 }
 .comment_send-btn {
+  border-radius: 10px;
+  background: #06f;
+  padding: 10px 20px;
+  width: 50%;
+  color: var(--5, #fff);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 120%;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+.comment_send-btn:hover {
+  background: transparent;
+  color: #0066ff;
+  border: 1px solid #0066ff;
 }
 .course_rating {
+  border-radius: 10px;
+  background: var(--5, #fff);
+  padding: 30px 15px;
+  min-width: 295px;
 }
 .course_rating-txt {
+  color: var(--3, #606060);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+}
+.course_rating-title {
+  color: var(--2, #1a1a1a);
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 </style>

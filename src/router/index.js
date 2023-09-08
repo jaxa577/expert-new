@@ -7,7 +7,8 @@ import VacanyInfo from "../views/ExVacancyInfo.vue";
 import Test from "../views/EXTest.vue";
 import login from "../views/ExLogin.vue";
 import profile from "../views/ExProfile.vue";
-import test from "../views/ExTest5.vue";
+import test from "../views/test.vue";
+import vacancyPlatform from "../views/ExVacancy.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +57,11 @@ const router = createRouter({
       path: "/profile",
       name: "profile",
       component: profile,
+    },
+    {
+      path: "/carer_vacancy",
+      name: "Carer vacancy",
+      component: vacancyPlatform,
     },
   ],
 });
