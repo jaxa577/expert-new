@@ -8,7 +8,10 @@ import Test from "../views/EXTest.vue";
 import login from "../views/ExLogin.vue";
 import profile from "../views/ExProfile.vue";
 import test from "../views/test.vue";
-import vacancyPlatform from "../views/ExVacancy.vue";
+import vacancyPlatform from "../views/vacancy/ExVacancy.vue";
+import vacancyOrgForm from "../views/vacancy/ExVacancyOrgFrom.vue";
+import vacancyInfo from "../views/vacancy/ExVacancyInfo.vue";
+import resume from "../views/resume/ExResume.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,6 +65,22 @@ const router = createRouter({
       path: "/carer_vacancy",
       name: "Carer vacancy",
       component: vacancyPlatform,
+    },
+    {
+      path: "/carer_vacancy_org_form",
+      name: "Carer vacancy organizition",
+      component: vacancyOrgForm,
+    },
+    {
+      path: "/about_vacancy_platform",
+      name: "About vacancy",
+      component: vacancyInfo,
+    },
+    {
+      path: "/resume/",
+      name: "Resume",
+      component: resume,
+      children: {},
     },
   ],
 });

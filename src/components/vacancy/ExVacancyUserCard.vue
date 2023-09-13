@@ -9,6 +9,8 @@ export default {
     date: String,
     viewed: String,
     status: String,
+    vacancyStatus: Boolean,
+    respondedCoutn: Number,
   },
 };
 </script>
@@ -22,31 +24,47 @@ export default {
     <p class="vacancy_card-status1">
       {{ status }}
     </p>
+    <div class="vacancy_user-statuses">
+      <div v-if="vacancyStatus" class="vacancy_user-status active">
+        <img src="/images/circle-checked.svg" alt="" /> Активная
+      </div>
+      <div v-else class="vacancy_user-status inactive">Не активная</div>
+    </div>
     <h3 class="vacancy_card-title">
       {{ salary?.toLocaleString() }}
       <span class="vacancy_card-currency">Сум/мес.</span>
     </h3>
+    <div class="vacancy_info-wrapper">
+      <div class="vacancy_card-info">
+        <p class="vacancy_card-info-text">Опубликованно</p>
+        <h4 class="vacancy_card-info-value">{{ date }}</h4>
+      </div>
+      <div class="vacancy_card-info">
+        <p class="vacancy_card-info-text">Посмотрели</p>
+        <h4 class="vacancy_card-info-value">
+          {{ viewed?.toLocaleString() }} человек
+        </h4>
+      </div>
+      <div class="vacancy_card-info">
+        <p class="vacancy_card-info-text">Откликнулись</p>
+        <h4 class="vacancy_card-info-value">
+          {{ respondedCoutn?.toLocaleString() }} человек
+        </h4>
+      </div>
+    </div>
     <div class="vacancy_card_extra">
       <img class="vacancy_card-extra-image" src="/images/owner.png" alt="" />
       <div>
         <h4 class="vacancy_card-extra-title">{{ company }}</h4>
         <div class="vacancy_card-extra-btm">
           <p class="vacancy_card-status">Компания</p>
-          <p class="vacancy_card-location">{{ location }}</p>
         </div>
       </div>
     </div>
-    <div class="vacancy_card-info">
-      <p class="vacancy_card-info-text">Опубликованно</p>
-      <h4 class="vacancy_card-info-value">{{ date }}</h4>
+    <div class="vacancy_card-user-btns">
+      <button class="vacancy_card-delete">Удалить вакансию</button>
+      <button class="vacancy_card-edit-btn">Редактировать</button>
     </div>
-    <div class="vacancy_card-info">
-      <p class="vacancy_card-info-text">Посмотрели</p>
-      <h4 class="vacancy_card-info-value">
-        {{ viewed?.toLocaleString() }} человек
-      </h4>
-    </div>
-    <a href="/about_vacancy" class="vacancy_card-btn">Откликнуться</a>
   </div>
 </template>
 
@@ -83,6 +101,29 @@ export default {
 .vacancy_card-title.title {
   padding-right: 35px;
 }
+.vacancy_user-statuses {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.vacancy_user-status {
+  border-radius: 200px;
+  padding: 8.5px 10px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 140%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.vacancy_user-status.active {
+  background: var(--11, #e5f0ff);
+  color: var(--1, #06f);
+}
+.vacancy_user-status.inactive {
+  background: var(--4, #f3f3f3);
+  color: var(--3, #606060);
+}
 .vacancy_card-status1 {
   color: var(--3, #606060);
   font-size: 14px;
@@ -114,7 +155,7 @@ export default {
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
-  color: #448fff;
+  color: #06f;
 }
 .vacancy_card-status {
   display: flex;
@@ -136,12 +177,20 @@ export default {
   align-items: center;
   gap: 20px;
 }
+.vacancy_info-wrapper {
+  padding: 15px 0;
+  border-top: 1px solid #f3f3f3;
+  border-bottom: 1px solid #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
 .vacancy_card-info {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 10px;
 }
 .vacancy_card-info-text {
   font-weight: 400;
@@ -174,5 +223,36 @@ export default {
 .vacancy_card-btn:hover {
   background: #448fff;
   color: #ffffff;
+}
+.vacancy_card-user-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+.vacancy_card-delete {
+  color: var(--1, #ff4c48);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 120%;
+  transition: all 0.3s ease;
+}
+.vacancy_card-delete:hover {
+  opacity: 0.6;
+}
+.vacancy_card-edit-btn {
+  border-radius: 10px;
+  border: 1px solid var(--1, #06f);
+  background: var(--5, #fff);
+  padding: 10px 20px;
+  color: var(--1, #06f);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 120%;
+  transition: all 0.3s ease;
+}
+.vacancy_card-edit-btn:hover {
+  background-color: #06f;
+  color: #fff;
 }
 </style>

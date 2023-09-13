@@ -204,7 +204,6 @@ export default {
           class="latest_card"
         >
           <resumeCard
-            :key="`resumeCards${index}`"
             :name="resume.name"
             :id="resume.id"
             :company="resume.company"

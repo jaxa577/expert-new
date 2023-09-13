@@ -1,11 +1,16 @@
 <script>
 import { Swiper, SwiperSlide } from "swiper/vue";
-import vacancyCard from "../components/ExCareerVacancy.vue";
+// import vacancyCard from "/src/components/vacancy";
+import vacancyCard from "/src/components/vacancy/ExCareerVacancy.vue";
+import vacancyUserCard from "/src/components/vacancy/ExVacancyUserCard.vue";
+import vacancyilter from "/src/components/vacancy/ExFilterVacs.vue";
 export default {
   components: {
     Swiper,
     SwiperSlide,
     vacancyCard,
+    vacancyUserCard,
+    vacancyilter,
   },
   data() {
     return {
@@ -29,6 +34,8 @@ export default {
           date: "Maй 30, 2023",
           viewed: "1234",
           status: "Работа в офисе",
+          isActive: false,
+          respsondCount: 577,
         },
         {
           id: 2,
@@ -39,6 +46,8 @@ export default {
           date: "Maй 30, 2023",
           viewed: "1234",
           status: "Работа в офисе",
+          isActive: false,
+          respsondCount: 577,
         },
         {
           id: 3,
@@ -49,6 +58,8 @@ export default {
           date: "Maй 30, 2023",
           viewed: "1234",
           status: "Работа в офисе",
+          isActive: true,
+          respsondCount: 577,
         },
         {
           id: 4,
@@ -59,6 +70,8 @@ export default {
           date: "Maй 30, 2023",
           viewed: "1234",
           status: "Работа в офисе",
+          isActive: true,
+          respsondCount: 577,
         },
         {
           id: 5,
@@ -69,6 +82,8 @@ export default {
           date: "Maй 30, 2023",
           viewed: "1234",
           status: "Работа в офисе",
+          isActive: true,
+          respsondCount: 577,
         },
         {
           id: 6,
@@ -79,6 +94,8 @@ export default {
           date: "Maй 30, 2023",
           viewed: "1234",
           status: "Работа в офисе",
+          isActive: false,
+          respsondCount: 577,
         },
       ],
       currentTab: 1,
@@ -94,9 +111,9 @@ export default {
 </script>
 
 <template>
-  <main>
+  <main class="vacancy">
     <section class="vac_tab">
-      <div class="container-fluid">
+      <div class="container-fluid vac_tab-container">
         <div class="vac_tab-inner">
           <h2>Вакансии</h2>
           <div class="vac_tab-inner-wrap">
@@ -111,19 +128,31 @@ export default {
                 {{ tab.name }}
               </div>
             </div>
-            <button class="vac_tab-addbtn">
+            <router-link to="/carer_vacancy_org_form" class="vac_tab-addbtn">
               <img src="/images/plus.svg" alt="" />
               Создать вакансию
-            </button>
+            </router-link>
           </div>
+        </div>
+        <div v-if="currentTab == 2" class="vacancy_org">
+          <div class="vacancy_org-info">
+            <div class="vacancy_org-ava">
+              <img src="/images/owner.png" alt="" />
+            </div>
+            <div>
+              <p class="vacancy_org-prename">Моя организация</p>
+              <h4 class="vacancy_org-name">RealSoft Academy</h4>
+            </div>
+          </div>
+          <button class="vacancy_org-edit">Настроить</button>
         </div>
       </div>
     </section>
 
-    <section class="vac_catalogue-rec">
-      <div class="container-fluid">
+    <section v-if="currentTab == 1" class="vac_catalogue-rec">
+      <div class="container-fluid vac_catalogue-container">
         <div class="vac_catalogue-main">
-          <div class="vac_catalogue-reccomends">
+          <div class="vac_catalogue-recommends">
             <div class="vac_recommends-top">
               <h3 class="vac_reccomends-title">Expert.uz Рекомендует</h3>
             </div>
@@ -152,40 +181,97 @@ export default {
             <div class="top_layer-item"></div>
             <div class="top_layer-item"></div>
           </div>
+          <div class="vac_catalogue">
+            <h3 class="vac_catalogue-title">Остальные вакансии каталога</h3>
+            <div class="vac_catalogue-list">
+              <vacancyCard
+                v-for="(vacancy, index) in vacanyList"
+                class="vacancy_card-item"
+                :id="vacancy.id"
+                :name="vacancy.name"
+                :salary="vacancy.salary"
+                :company="vacancy.company"
+                :location="vacancy.location"
+                :date="vacancy.date"
+                :viewed="vacancy.viewed"
+                :status="vacancy.status"
+              />
+            </div>
+          </div>
         </div>
 
-        <div class="vac_catalogue-filter"></div>
+        <vacancyilter class="vacancy_catalogue-filter" />
       </div>
     </section>
 
-    <section class="vac_catalogue">
+    <section v-else-if="currentTab == 2" class="vacancy_user">
       <div class="container-fluid">
-        <h3 class="vac_catalogue-title">Остальные вакансии каталога</h3>
-        <div class="vac_catalogue-list">
-          <vacancyCard
-            v-for="(vacancy, index) in vacanyList"
-            class="vacancy_card-item"
-            :id="vacancy.id"
-            :name="vacancy.name"
-            :salary="vacancy.salary"
-            :company="vacancy.company"
-            :location="vacancy.location"
-            :date="vacancy.date"
-            :viewed="vacancy.viewed"
-            :status="vacancy.status"
-          />
+        <div class="vac_catalogue">
+          <div class="vac_catalogue-list">
+            <vacancyUserCard
+              v-for="(vacancy, index) in vacanyList"
+              class="vacancy_card-item"
+              :id="vacancy.id"
+              :name="vacancy.name"
+              :salary="vacancy.salary"
+              :company="vacancy.company"
+              :location="vacancy.location"
+              :date="vacancy.date"
+              :viewed="vacancy.viewed"
+              :status="vacancy.status"
+              :respondedCoutn="vacancy.respsondCount"
+              :vacancyStatus="vacancy.isActive"
+            />
+          </div>
         </div>
       </div>
     </section>
+
+    <!-- <section class="vac_catalogue">
+  <div class="vac_catalogue">
+    <h3 class="vac_catalogue-title">Остальные вакансии каталога</h3>
+    <div class="vac_catalogue-list">
+      <vacancyCard
+      v-for="(vacancy, index) in vacanyList"
+      class="vacancy_card-item"
+      :id="vacancy.id"
+      :name="vacancy.name"
+      :salary="vacancy.salary"
+      :company="vacancy.company"
+      :location="vacancy.location"
+      :date="vacancy.date"
+      :viewed="vacancy.viewed"
+      :status="vacancy.status"
+      />
+    </div>
+  </div>
+</section> -->
   </main>
 </template>
 
 <style>
-.vac_tab {
+.vacancy {
+  padding: 30px 0;
 }
 .container-fluid {
   width: 100%;
   padding: 0 20px;
+}
+.vac_tab-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px;
+}
+.vac_catalogue-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.vacancy_catalogue-filter {
+  min-width: 20%;
+  max-width: 20%;
+  width: 20%;
 }
 .vac_tab-inner {
   display: flex;
@@ -242,6 +328,58 @@ export default {
   color: #06f;
   border: 1px solid #06f;
 }
+.vacancy_org {
+  border-radius: 10px;
+  background: var(--5, #fff);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 450px;
+  width: 100%;
+}
+.vacancy_org-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.vacancy_org-ava img {
+  width: 50px;
+  max-width: 50px;
+  min-width: 50px;
+  height: 50px;
+  max-height: 50px;
+  min-height: 50px;
+  object-fit: cover;
+}
+.vacancy_org-prename {
+  color: var(--3, #606060);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 140%; /* 16.8px */
+  margin-bottom: 5px;
+}
+.vacancy_org-name {
+  color: var(--2, #1a1a1a);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 120%;
+}
+.vacancy_org-edit {
+  border-radius: 10px;
+  background: var(--11, #e5f0ff);
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 120%;
+  color: var(--1, #06f);
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+.vacancy_org-edit:hover {
+  opacity: 0.7;
+}
 
 /* ------------------------- VACANCY RECOMMENDS ------------------------- */
 .vac_catalogue-rec {
@@ -250,12 +388,12 @@ export default {
 .container-fluid {
 }
 .vac_catalogue-main {
-  display: flex;
-  gap: 20px;
+  width: calc(80% - 20px);
+  max-width: calc(80% - 20px);
+  min-width: calc(80% - 20px);
 }
-.vac_catalogue-reccomends {
+.vac_catalogue-recommends {
   position: relative;
-  /* max-width: 1400px; */
   padding: 30px 20px;
   border-radius: 10px;
   background: linear-gradient(100deg, #438af6 -0.44%, #1d2352 100%);
